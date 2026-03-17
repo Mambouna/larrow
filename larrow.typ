@@ -37,7 +37,7 @@
     let ty = page.height.to-absolute().pt() - to-loc.y.to-absolute().pt()
 
     // Apply offsets
-    fx = (fx + from-offset.at(0).to-absolute().pt() + 
+    fx = (fx + from-offset.at(0).to-absolute().pt() +
           both-offset.at(0).to-absolute().pt() + from-dx)
     fy = (fy + from-offset.at(1).to-absolute().pt() +
           both-offset.at(1).to-absolute().pt() + from-dy)
