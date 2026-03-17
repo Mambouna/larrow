@@ -73,6 +73,11 @@
     control-x = midpoint-x + unit-diff-y * bend
     control-y = midpoint-y + -1 * unit-diff-x * bend
 
+    // If tips aren't set together, draw individual marks.
+    // Otherwise, draw both-tip for both ends.
+    let mark = if (both-tip == none) {(start: from-tip, end: tip)} else {
+        (symbol: both-tip)
+    }
     // Actual drawing of curve.
     place(dx: -1 * here-loc.x, dy: -1 * here-loc.y, cetz.canvas(length: 1pt, {
         // Only import necessary components for example not to override
@@ -82,17 +87,10 @@
         // the entire page and thus properly locate coordinates from base typst
         // on the page.
         rect((0, 0), (page.width, page.height), stroke: none)
-        // If tips aren't set together, draw individual marks.
-        if both-tip == none {
-            // This bezier curve is the actual arrow.
-            bezier((fx, fy), (tx, ty), (control-x, control-y),
-                   mark: (start: from-tip, end: tip), stroke: stroke
-            )
-        } else { // Otherwise, draw both-tip for both ends.
-            bezier((fx, fy), (tx, ty), (control-x, control-y),
-                   mark: (symbol: both-tip), stroke: stroke
-            )
-        }
+        // This bezier curve is the actual arrow.
+        bezier((fx, fy), (tx, ty), (control-x, control-y),
+            mark: mark, stroke: stroke
+        )
         // If debugging was turned on for the arrow, the starting and end
         // points as well as the control point is marked.
         if debug {
