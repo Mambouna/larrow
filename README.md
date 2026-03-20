@@ -61,9 +61,11 @@ This function draws a directional arrow from the provided starting point
 `from` and `to` are both either standard typst labels (e.g. `<mark>`) or
 special `arrow-label`s provided by this package.
 
-The most important optional argument is `bend`, which controls if the arrow
-should be curved. A positive value for `bend` will result in a right-handed
-curve where a negative value will give a left-handed curve in the arrow.
+The most important optional argument is `bend`, which controls if the
+arrow should be straight, curved, or perpendicular. A positive value
+for `bend` will result in a right-handed curve where a negative value
+will give a left-handed curve in the arrow.  The special values `"|-"`
+and `"-|"` result in perpendicular lines.
 
 Other optional parameters are available and listed under the previously
 discussed ones below:
@@ -76,6 +78,7 @@ discussed ones below:
   result in a straight arrow. Growing positive values give the arrow an
   increasing right-handed curvature. Shrinking negative values give the arrow
   an increasing left-handed curvature.
+  The special values `"|-"` and `"-|"` result in perpendicular lines.
     - Default value: `0`
 - `tip` (optional) - Defines the tip the arrow will use at its end. Default is
   an unfilled triangle. Any possible value for a cetz mark can be used here.
@@ -180,6 +183,6 @@ If you want to use the package locally, you have two options:
 4. Download only the single file named `larrow.typ` and place it next to
    the typst file you wish to use the package in. Then simply import the file
    as follows: `#import "larrow.typ": *`
-   
+
    This method will make the package available only to files that you directly
    copy the source file next to.

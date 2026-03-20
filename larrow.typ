@@ -37,7 +37,7 @@
     let ty = page.height.to-absolute().pt() - to-loc.y.to-absolute().pt()
 
     // Apply offsets
-    fx = (fx + from-offset.at(0).to-absolute().pt() + 
+    fx = (fx + from-offset.at(0).to-absolute().pt() +
           both-offset.at(0).to-absolute().pt() + from-dx)
     fy = (fy + from-offset.at(1).to-absolute().pt() +
           both-offset.at(1).to-absolute().pt() + from-dy)
@@ -68,29 +68,32 @@
     // Coordinates for the final control point.
     let control-x
     let control-y
-    // Whether bend is positive or negative automatically gives correct
-    // handedness of the curve.
-    control-x = midpoint-x + unit-diff-y * bend
-    control-y = midpoint-y + -1 * unit-diff-x * bend
 
+    // If tips aren't set together, draw individual marks.
+    // Otherwise, draw both-tip for both ends.
+    let mark = if (both-tip == none) {(start: from-tip, end: tip)} else {
+        (symbol: both-tip)
+    }
     // Actual drawing of curve.
     place(dx: -1 * here-loc.x, dy: -1 * here-loc.y, cetz.canvas(length: 1pt, {
         // Only import necessary components for example not to override
         // standard stroke definition.
-        import cetz.draw: rect, bezier, circle
+        import cetz.draw: rect, bezier, circle, line
         // This rectangle is used to force the cetz canvas to take the size of
         // the entire page and thus properly locate coordinates from base typst
         // on the page.
         rect((0, 0), (page.width, page.height), stroke: none)
-        // If tips aren't set together, draw individual marks.
-        if both-tip == none {
+        if bend in ("-|", "|-") {
+            line((fx,fy), ((fx,fy), bend, (tx,ty)), (tx,ty),
+                 mark: mark, stroke: stroke)
+        } else {
+            // Whether bend is positive or negative automatically gives correct
+            // handedness of the curve.
+            control-x = midpoint-x + unit-diff-y * bend
+            control-y = midpoint-y + -1 * unit-diff-x * bend
             // This bezier curve is the actual arrow.
             bezier((fx, fy), (tx, ty), (control-x, control-y),
-                   mark: (start: from-tip, end: tip), stroke: stroke
-            )
-        } else { // Otherwise, draw both-tip for both ends.
-            bezier((fx, fy), (tx, ty), (control-x, control-y),
-                   mark: (symbol: both-tip), stroke: stroke
+                   mark: mark, stroke: stroke
             )
         }
         // If debugging was turned on for the arrow, the starting and end
@@ -98,7 +101,11 @@
         if debug {
             circle((fx, fy), stroke: green)
             circle((tx, ty), stroke: red)
-            circle((control-x, control-y), stroke: blue)
+            if bend in ("-|", "|-") {
+                circle(((fx,fy), bend, (tx,ty)), stroke: blue)
+            } else {
+                circle((control-x, control-y), stroke: blue)
+            }
         }
     }))
 }
