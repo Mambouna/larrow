@@ -30,10 +30,11 @@ Draw and style arrows between labels.
 ![Example output of larrow](./example/example.png)
 
 ## Quick overview
-- Import via `#import "@preview/larrow:1.0.0"`.
+- Import via `#import "@preview/larrow:1.1.0"`.
 - Use `label-arrow(<from-lbl>, <to-lbl>)` to draw an arrow between two labels.
 - Use the `bend` parameter to curve the arrow. Positive values make a
-  right-handed curve, negative ones a left-handed one.
+  right-handed curve, negative ones a left-handed one. `"|-"` and `"-|"` will
+  make perpendicular straight lines for the arrow.
 - Create labels with inbuilt position offsets with
   `arrow-label(<lbl>, dx: 2mm, dy: 4mm)`. Use `#al()` as a shorthand.
 - If arrows come out wrong with normal labels, try using `arrow-labels` in
@@ -43,7 +44,7 @@ Draw and style arrows between labels.
 
 ## Usage
 ### Import
-`#import "@preview/larrow:1.0.0": *`
+`#import "@preview/larrow:1.1.0": *`
 
 ### Functionality
 The package makes available two key functions. `label-arrow()` draws arrows
@@ -78,7 +79,7 @@ discussed ones below:
 - `bend` (optional) - Curvature control of the arrow. A value of `0` will
   result in a straight arrow. Growing positive values give the arrow an
   increasing right-handed curvature. Shrinking negative values give the arrow
-  an increasing left-handed curvature.
+  an increasing left-handed curvature.  
   The special values `"|-"` and `"-|"` result in perpendicular lines.
     - Default value: `0`
 - `tip` (optional) - Defines the tip the arrow will use at its end. Default is
@@ -143,7 +144,7 @@ To set default values or make custom variants with defaults, you can use `#let`
 instead to overwrite them with given parameter values:
 
 ```typst
-#import "@preview/larrow:1.0.0": *
+#import "@preview/larrow:1.1.0": *
 
 // Make the default tip for arrows a triangle.
 #let label-arrow = label-arrow.with(tip: ">")
@@ -177,7 +178,7 @@ If you want to use the package locally, you have two options:
    [official documentation](https://github.com/typst/packages?tab=readme-ov-file#local-packages)
    for where to find and create a namespace. Then simply import the package
    from that namespace. The following example assumes a namespace named `local`
-   to be used: `#import "@local/larrow:1.0.0": *`
+   to be used: `#import "@local/larrow:1.1.0": *`
 
    This makes the package available anywhere on your system via the namespace
    import.
