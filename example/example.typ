@@ -1,4 +1,4 @@
-#import "@preview/larrow:1.0.0": *
+#import "@preview/larrow:1.1.0": *
 
 #set page(width: 16cm, height: 5cm, margin: (left: 1cm))
 
@@ -15,7 +15,7 @@
 #lal(<start-left>)Everything clear? If not, start from the beginning.
 ~ <start-2>
 
-#label-arrow(<start-1>, <end-1>, bend: -40, tip: "o", from-tip: "|",
+#label-arrow(<start-1>, <end-1>, bend: "-|", tip: "o", from-tip: "|",
              stroke: 1.5pt + red, both-offset: (1mm, 2mm))
 #larw(<start-left>, <end-left>, bend: -25, both-tip: ">")
 #label-arrow(<start-2>, <end-2>, from-offset: (0pt, 3pt),
