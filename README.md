@@ -34,7 +34,7 @@ Draw and style arrows between labels.
 - Use `label-arrow(<from-lbl>, <to-lbl>)` to draw an arrow between two labels.
 - Use the `bend` parameter to curve the arrow. Positive values make a
   right-handed curve, negative ones a left-handed one. `"|-"` and `"-|"` will
-  make perpendicular straight lines for the arrow.
+  make perpendicular straight lines for the arrow. For complex paths, it also accepts a function that takes the start and end points and returns a list of intermediate points (of the form `((fx, fy), (tx, ty)) => ((ax, ay), ...)`)
 - Create labels with inbuilt position offsets with
   `arrow-label(<lbl>, dx: 2mm, dy: 4mm)`. Use `#al()` as a shorthand.
 - If arrows come out wrong with normal labels, try using `arrow-labels` in
