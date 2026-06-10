@@ -86,6 +86,9 @@
         if bend in ("-|", "|-") {
             line((fx,fy), ((fx,fy), bend, (tx,ty)), (tx,ty),
                  mark: mark, stroke: stroke)
+        } else if type(bend) == function {
+            line((fx, fy), ..bend((fx, fy), (tx, ty)), (tx, ty),
+                mark: mark, stroke: stroke)
         } else {
             // Whether bend is positive or negative automatically gives correct
             // handedness of the curve.
