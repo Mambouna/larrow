@@ -39,6 +39,7 @@ Draw and style arrows between labels.
   intermediate points (of the form `((fx, fy), (tx, ty)) => ((ax, ay), ...)`)
 - Create labels with inbuilt position offsets with
   `arrow-label(<lbl>, dx: 2mm, dy: 4mm)`. Use `#al()` as a shorthand.
+- Add text to labels by passing `caption`, and style it with `caption-options`.
 - If arrows come out wrong with normal labels, try using `arrow-labels` in
   their stead, which fix their positions better.
 - If there is too much whitespace at the location of a label, remove spaces
@@ -110,6 +111,12 @@ discussed ones below:
   positions of the arrow. All offsets can be used in combination or
   individually.
     - Default value: `(0pt, 0pt)`
+- `caption` (optional) - Content to show in the middle of the arrow. 
+    - Default value: `none`
+- `caption-options` (optional) - How to format the caption (if given).
+    - Default value: `none`
+    - Possible values: a dictionary of any parameters accepted by [CeTZ content
+      ](https://cetz-package.github.io/docs/api/draw-functions/shapes/content/).
 - `debug` (optional): A boolean flag to display the start position, end
   position and control point resulting from the bend parameter of the arrow.
   The start is displayed in green, the end in red and the control point in
