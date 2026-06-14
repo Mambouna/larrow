@@ -17,12 +17,14 @@
     // Line from given points
     let chain-line(..args) = {
         let chain-center(points) = {
-            let length(((ax, ay), (bx, by))) = calc.sqrt(calc.pow(ax - bx, 2) + calc.pow(ay - by, 2))
+            let length(((ax, ay), (bx, by))) = calc.sqrt(calc.pow(ax - bx, 2)
+                + calc.pow(ay - by, 2))
             let center(chunks, lengths, dist) = {
                 let length = lengths.at(0)
                 if dist <= length {
                     let ((ax, ay), (bx, by)) = chunks.at(0)
-                    (ax + (bx - ax) / length * dist, ay + (by - ay) / lengths.at(0) * dist)
+                    (ax + (bx - ax) / length * dist,
+                     ay + (by - ay) / lengths.at(0) * dist)
                 } else {
                     center(chunks.slice(1), lengths.slice(1), dist - length)
                 }
@@ -49,7 +51,8 @@
         let midpoint-x = fx + diff-x / 2
         let midpoint-y = fy + diff-y / 2
         // Magnitude of the difference vector between from and to labels.
-        let magnitude-diff = calc.sqrt(calc.pow(diff-x, 2) + calc.pow(diff-y, 2))
+        let magnitude-diff = calc.sqrt(
+            calc.pow(diff-x, 2) + calc.pow(diff-y, 2))
         let unit-diff-x
         let unit-diff-y
         if magnitude-diff != 0 {
