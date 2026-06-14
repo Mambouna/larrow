@@ -115,8 +115,8 @@ discussed ones below:
     - Default value: `none`
 - `caption-options` (optional) - How to format the caption (if given).
     - Default value: `none`
-    - Possible values: a dictionary of any parameters accepted by [CeTZ content
-      ](https://cetz-package.github.io/docs/api/draw-functions/shapes/content/).
+    - Possible values: a dictionary of any parameters accepted by
+      [CeTZ content](https://cetz-package.github.io/docs/api/draw-functions/shapes/content/).
 - `debug` (optional): A boolean flag to display the start position, end
   position and control point resulting from the bend parameter of the arrow.
   The start is displayed in green, the end in red and the control point in
