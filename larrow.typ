@@ -5,7 +5,9 @@
 #let label-arrow(from, to, bend: 0, tip: "straight", from-tip: none,
                  both-tip: none, stroke: auto, from-offset: (0pt, 0pt),
                  to-offset: (0pt, 0pt), both-offset: (0pt, 0pt),
-                 caption: none, caption-options: none, debug: false
+                 caption: none, caption-options:
+                    (frame: "rect", fill: white, stroke: 0pt, padding: 1pt),
+                 debug: false
 ) = context {
     // Only import necessary components for example not to override
     // standard stroke definition.
