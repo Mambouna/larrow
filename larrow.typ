@@ -5,42 +5,30 @@
 #let label-arrow(from, to, bend: 0, tip: "straight", from-tip: none,
                  both-tip: none, stroke: auto, from-offset: (0pt, 0pt),
                  to-offset: (0pt, 0pt), both-offset: (0pt, 0pt),
-                 caption: none, caption-options:
-                    (frame: "rect", fill: white, stroke: 0pt, padding: 1pt),
+                 caption: none, caption-position: 50%, caption-options:
+                    (frame: "rect", fill: auto, stroke: 0pt, padding: 1pt),
                  debug: false
 ) = context {
+    let set-fill(opts) = {
+        if opts.fill == auto {
+            opts + (fill: {
+                if page.fill == auto {white} else {page.fill}
+            })
+        } else {
+            opts
+        }
+    }
     // Only import necessary components for example not to override
     // standard stroke definition.
     import cetz.draw: rect, bezier, circle, line, content
 
-    // These functions return a tuple (line, center-coords, debug-points)
+    // These functions return a tuple (line, debug-points)
     // Line from given points
-    let chain-line(..args) = {
-        let chain-center(points) = {
-            let length(((ax, ay), (bx, by))) = calc.sqrt(calc.pow(ax - bx, 2)
-                + calc.pow(ay - by, 2))
-            let center(chunks, lengths, dist) = {
-                let length = lengths.at(0)
-                if dist <= length {
-                    let ((ax, ay), (bx, by)) = chunks.at(0)
-                    (ax + (bx - ax) / length * dist,
-                     ay + (by - ay) / lengths.at(0) * dist)
-                } else {
-                    center(chunks.slice(1), lengths.slice(1), dist - length)
-                }
-            }
-
-            let chunks = points.windows(2)
-            // assert(false, message: repr(points))
-            let lengths = chunks.map(length)
-            center(chunks, lengths, lengths.sum() / 2)
-        }
-        (
-            line(..args),
-            chain-center(args.pos()),
-            args.pos().slice(1, -1)
-        )
-    }
+    let chain-line(..args) = (
+        line(..args, name: "arrow"),
+        args.pos().slice(1, -1)
+    )
+    
     // Straight line or bezier curve
     let bezier-line((fx, fy), (tx, ty), bend, ..args) = {
         // Vector from "from" label to "to" label.
@@ -68,8 +56,7 @@
         let control-y = midpoint-y + -1 * unit-diff-x * bend
 
         (
-            bezier((fx, fy), (tx, ty), (control-x, control-y), ..args),
-            ((control-x + midpoint-x) / 2, (control-y + midpoint-y) / 2),
+            bezier((fx, fy), (tx, ty), (control-x, control-y), ..args, name: "arrow"),
             ((control-x, control-y),)
         )
     }
@@ -125,7 +112,7 @@
         // the entire page and thus properly locate coordinates from base typst
         // on the page.
         rect((0, 0), (page.width, page.height), stroke: none)
-        let (line, center, debug-points) = (
+        let (line, debug-points) = (
             if bend == "-|" {
                 chain-line((fx, fy), (tx, fy), (tx, ty),
                            mark: mark, stroke: stroke)
@@ -142,7 +129,8 @@
         )
         line
         if caption != none {
-            content(center, caption, ..caption-options)
+            content((name: "arrow", anchor: caption-position),
+                     repr(caption-options.fill), ..set-fill(caption-options))
         }
         // If debugging was turned on for the arrow, the starting and end
         // points as well as the control point is marked.
