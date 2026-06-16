@@ -5,7 +5,7 @@
 #let label-arrow(from, to, bend: 0, tip: "straight", from-tip: none,
                  both-tip: none, stroke: auto, from-offset: (0pt, 0pt),
                  to-offset: (0pt, 0pt), both-offset: (0pt, 0pt),
-                 caption: none, caption-position: 50%, caption-options:
+                 caption: none, caption-position: "mid", caption-options:
                     (frame: "rect", fill: auto, stroke: 0pt, padding: 1pt),
                  debug: false
 ) = context {
