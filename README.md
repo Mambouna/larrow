@@ -111,10 +111,18 @@ discussed ones below:
   positions of the arrow. All offsets can be used in combination or
   individually.
     - Default value: `(0pt, 0pt)`
-- `caption` (optional) - Content to show in the middle of the arrow. 
+- `caption` (optional) - Content to show on the arrow. 
     - Default value: `none`
+- `caption-position` (optional) - An anchor for positioning the caption
+  (if given) along the arrow.
+    - Default value: `"mid"`
+    - Possible values: a [ratio](https://typst.app/docs/reference/layout/ratio)
+      for relative distance, a
+      [number](https://cetz-package.github.io/docs/basics/custom-types/#number)
+      for absolute, or special names `"start"`, `"mid"`, and `"end"`.
 - `caption-options` (optional) - How to format the caption (if given).
-    - Default value: `none`
+  `fill: auto` is a special value matching the page background color.
+    - Default value: `(frame: "rect", fill: auto, stroke: 0pt, padding: 1pt)`
     - Possible values: a dictionary of any parameters accepted by
       [CeTZ content](https://cetz-package.github.io/docs/api/draw-functions/shapes/content/).
 - `debug` (optional): A boolean flag to display the start position, end
