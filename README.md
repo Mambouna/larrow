@@ -63,7 +63,8 @@ This function draws a directional arrow from the provided starting point
 (argument `from`) to the provided stopping point (argument `to`).
 
 `from` and `to` are both either standard typst labels (e.g. `<mark>`) or
-special `arrow-label`s provided by this package.
+special `arrow-label`s provided by this package. They also directly accept
+elements that have location --- that is, the result of calling `query`.
 
 The most important optional argument is `bend`, which controls if the
 arrow should be straight, curved, or perpendicular. A positive value

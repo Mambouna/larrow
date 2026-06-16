@@ -6,28 +6,40 @@
                  both-tip: none, stroke: auto, from-offset: (0pt, 0pt),
                  to-offset: (0pt, 0pt), both-offset: (0pt, 0pt), debug: false
 ) = context {
+    let get-element(elem) = {
+        if type(elem) == label {
+            query(elem).first()            
+        } else if type(elem) == content {
+            elem
+        } else {
+            assert(false, message: "`from` and `to` should be labels
+                or contents, but " + repr(elem) + " is "
+                + repr(type(elem)))
+        }
+    }
+
     // Where the function call is in the layout. Necessary to place the canvas
     // in the top left corner of the page later.
     let here-loc = locate(here()).position()
 
     // Get the from position and offsets if available.
-    let from-loc = locate(from).position()
-    let from-deltas = query(from).first()
+    let from-elem = get-element(from)
+    let from-loc = from-elem.location().position()
     let from-dx
     let from-dy
-    if from-deltas.has("value") {
-        from-dx = from-deltas.value.at(0).to-absolute().pt()
-        from-dy = from-deltas.value.at(1).to-absolute().pt()
+    if from-elem.has("value") {
+        from-dx = from-elem.value.at(0).to-absolute().pt()
+        from-dy = from-elem.value.at(1).to-absolute().pt()
     } else { (from-dx, from-dy) = (0, 0) }
 
     // Get the to position and offsets if available.
-    let to-loc = locate(to).position()
-    let to-deltas = query(to).first()
+    let to-elem = get-element(to)
+    let to-loc = to-elem.location().position()
     let to-dx
     let to-dy
-    if to-deltas.has("value") {
-        to-dx = to-deltas.value.at(0).to-absolute().pt()
-        to-dy = to-deltas.value.at(1).to-absolute().pt()
+    if to-elem.has("value") {
+        to-dx = to-elem.value.at(0).to-absolute().pt()
+        to-dy = to-elem.value.at(1).to-absolute().pt()
     } else { (to-dx, to-dy) = (0, 0) }
 
     // Coordinates of the from and to positions without offsets so far.
