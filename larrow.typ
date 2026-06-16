@@ -18,45 +18,38 @@
         }
     }
 
+    let position(elem, offset) = {
+        let loc = elem.location().position()
+        let (dx, dy) = if (
+            elem.has("value") and elem.value.len() == 2
+            and elem.value.all(val => type(val) == length) 
+        ) {(
+            elem.value.at(0).to-absolute().pt(),
+            elem.value.at(1).to-absolute().pt()
+        )} else { (0, 0) }
+
+        // Coordinates without offsets so far.
+        let x = loc.x.to-absolute().pt()
+        let y = page.height.to-absolute().pt() - loc.y.to-absolute().pt()
+
+        // Apply offsets
+        x = (x + offset.at(0).to-absolute().pt() +
+              both-offset.at(0).to-absolute().pt() + dx)
+        y = (y + offset.at(1).to-absolute().pt() +
+              both-offset.at(1).to-absolute().pt() + dy)
+
+        (x, y)
+    }
+
     // Where the function call is in the layout. Necessary to place the canvas
     // in the top left corner of the page later.
     let here-loc = locate(here()).position()
 
     // Get the from position and offsets if available.
     let from-elem = get-element(from)
-    let from-loc = from-elem.location().position()
-    let from-dx
-    let from-dy
-    if from-elem.has("value") {
-        from-dx = from-elem.value.at(0).to-absolute().pt()
-        from-dy = from-elem.value.at(1).to-absolute().pt()
-    } else { (from-dx, from-dy) = (0, 0) }
-
-    // Get the to position and offsets if available.
+    let (fx, fy) = position(from-elem, from-offset)
     let to-elem = get-element(to)
-    let to-loc = to-elem.location().position()
-    let to-dx
-    let to-dy
-    if to-elem.has("value") {
-        to-dx = to-elem.value.at(0).to-absolute().pt()
-        to-dy = to-elem.value.at(1).to-absolute().pt()
-    } else { (to-dx, to-dy) = (0, 0) }
-
-    // Coordinates of the from and to positions without offsets so far.
-    let fx = from-loc.x.to-absolute().pt()
-    let fy = page.height.to-absolute().pt() - from-loc.y.to-absolute().pt()
-    let tx = to-loc.x.to-absolute().pt()
-    let ty = page.height.to-absolute().pt() - to-loc.y.to-absolute().pt()
-
-    // Apply offsets
-    fx = (fx + from-offset.at(0).to-absolute().pt() +
-          both-offset.at(0).to-absolute().pt() + from-dx)
-    fy = (fy + from-offset.at(1).to-absolute().pt() +
-          both-offset.at(1).to-absolute().pt() + from-dy)
-    tx = (tx + to-offset.at(0).to-absolute().pt() +
-          both-offset.at(0).to-absolute().pt() + to-dx)
-    ty = (ty + to-offset.at(1).to-absolute().pt() +
-          both-offset.at(1).to-absolute().pt() + to-dy)
+    let (tx, ty) = position(to-elem, to-offset)
 
     // Vector from "from" label to "to" label.
     let diff-x = tx - fx
