@@ -130,7 +130,7 @@
         line
         if caption != none {
             content((name: "arrow", anchor: caption-position),
-                     repr(caption-options.fill), ..set-fill(caption-options))
+                     caption, ..set-fill(caption-options))
         }
         // If debugging was turned on for the arrow, the starting and end
         // points as well as the control point is marked.
