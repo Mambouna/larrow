@@ -9,6 +9,41 @@
                     (frame: "rect", fill: auto, stroke: 0pt, padding: 1pt),
                  debug: false
 ) = context {
+    let get-element(elem) = {
+        if type(elem) == label {
+            query(elem).first()            
+        } else if type(elem) == content {
+            elem
+        } else {
+            assert(false, message: "`from` and `to` should be labels
+                or contents, but " + repr(elem) + " is "
+                + repr(type(elem)))
+        }
+    }
+
+    let position(elem, offset) = {
+        let loc = elem.location().position()
+        let (dx, dy) = if (
+            elem.has("value") and elem.value.len() == 2
+            and elem.value.all(val => type(val) == length) 
+        ) {(
+            elem.value.at(0).to-absolute().pt(),
+            elem.value.at(1).to-absolute().pt()
+        )} else { (0, 0) }
+
+        // Coordinates without offsets so far.
+        let x = loc.x.to-absolute().pt()
+        let y = page.height.to-absolute().pt() - loc.y.to-absolute().pt()
+
+        // Apply offsets
+        x = (x + offset.at(0).to-absolute().pt() +
+              both-offset.at(0).to-absolute().pt() + dx)
+        y = (y + offset.at(1).to-absolute().pt() +
+              both-offset.at(1).to-absolute().pt() + dy)
+
+        (x, y)
+    }
+
     let set-fill(opts) = {
         if opts.fill == auto {
             opts + (fill: {
@@ -18,6 +53,7 @@
             opts
         }
     }
+
     // Only import necessary components for example not to override
     // standard stroke definition.
     import cetz.draw: rect, bezier, circle, line, content
@@ -66,40 +102,10 @@
     let here-loc = locate(here()).position()
 
     // Get the from position and offsets if available.
-    let from-loc = locate(from).position()
-    let from-deltas = query(from).first()
-    let from-dx
-    let from-dy
-    if from-deltas.has("value") {
-        from-dx = from-deltas.value.at(0).to-absolute().pt()
-        from-dy = from-deltas.value.at(1).to-absolute().pt()
-    } else { (from-dx, from-dy) = (0, 0) }
-
-    // Get the to position and offsets if available.
-    let to-loc = locate(to).position()
-    let to-deltas = query(to).first()
-    let to-dx
-    let to-dy
-    if to-deltas.has("value") {
-        to-dx = to-deltas.value.at(0).to-absolute().pt()
-        to-dy = to-deltas.value.at(1).to-absolute().pt()
-    } else { (to-dx, to-dy) = (0, 0) }
-
-    // Coordinates of the from and to positions without offsets so far.
-    let fx = from-loc.x.to-absolute().pt()
-    let fy = page.height.to-absolute().pt() - from-loc.y.to-absolute().pt()
-    let tx = to-loc.x.to-absolute().pt()
-    let ty = page.height.to-absolute().pt() - to-loc.y.to-absolute().pt()
-
-    // Apply offsets
-    fx = (fx + from-offset.at(0).to-absolute().pt() +
-          both-offset.at(0).to-absolute().pt() + from-dx)
-    fy = (fy + from-offset.at(1).to-absolute().pt() +
-          both-offset.at(1).to-absolute().pt() + from-dy)
-    tx = (tx + to-offset.at(0).to-absolute().pt() +
-          both-offset.at(0).to-absolute().pt() + to-dx)
-    ty = (ty + to-offset.at(1).to-absolute().pt() +
-          both-offset.at(1).to-absolute().pt() + to-dy)
+    let from-elem = get-element(from)
+    let (fx, fy) = position(from-elem, from-offset)
+    let to-elem = get-element(to)
+    let (tx, ty) = position(to-elem, to-offset)
 
     // If tips aren't set together, draw individual marks.
     // Otherwise, draw both-tip for both ends.
