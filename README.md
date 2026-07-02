@@ -3,9 +3,9 @@ Draw and style arrows between labels.
 
 ## Example
 ```typst
-#import "@preview/larrow:1.1.0": *
+#import "@local/larrow:1.2.0": *
 
-#set page(width: 16cm, height: 5cm, margin: (left: 1cm))
+#set page(width: 16cm, height: 6cm, margin: (left: 1cm))
 
 #let lal = arrow-label.with(dx: -2mm, dy: 1mm)
 
@@ -13,6 +13,9 @@ Draw and style arrows between labels.
 + This package allows drawing arrows between labels. ~ <start-1>
 + The arrows can be styled in different ways to suit your needs.
 + It's easy to curve the arrow to your liking with the `bend` parameter.
++ You can also use a function that exposes the from and to positions and
+  returns arbitrary points the arrow should pass through in a series of
+  straight lines.
 + Now let's get to the end.
 + This really didn't need to be another point but hey,#al(<end-2>) we just
   needed to fill some space. #arrow-label(<end-1>)
@@ -21,7 +24,11 @@ Draw and style arrows between labels.
 ~ <start-2>
 
 #label-arrow(<start-1>, <end-1>, bend: "-|", tip: "o", from-tip: "|",
-             stroke: 1.5pt + red, both-offset: (1mm, 2mm))
+             stroke: 1.5pt + red, both-offset: (1mm, 2mm), caption: [Caption])
+#label-arrow(<start-1>, <end-1>, bend: ((fx, fy), (tx, ty)) => (
+        (fx + 100, fy), (fx + 100, fy - 25), (fx + 125, fy - 25),
+    ), stroke: blue, to-offset: (-0.5mm, 2mm)
+)
 #larw(<start-left>, <end-left>, bend: -25, both-tip: ">")
 #label-arrow(<start-2>, <end-2>, from-offset: (0pt, 3pt),
              to-offset: (0pt, -4pt))
@@ -30,13 +37,13 @@ Draw and style arrows between labels.
 ![Example output of larrow](./example/example.png)
 
 ## Quick overview
-- Import via `#import "@preview/larrow:1.1.0"`.
+- Import via `#import "@preview/larrow:1.2.0"`.
 - Use `label-arrow(<from-lbl>, <to-lbl>)` to draw an arrow between two labels.
 - Use the `bend` parameter to curve the arrow. Positive values make a
   right-handed curve, negative ones a left-handed one. `"|-"` and `"-|"` will
   make perpendicular straight lines for the arrow. For complex paths, it also
   accepts a function that takes the start and end points and returns a list of
-  intermediate points (of the form `((fx, fy), (tx, ty)) => ((ax, ay), ...)`)
+  intermediate points (of the form `((fx, fy), (tx, ty)) => ((ax, ay), ...)`).
 - Create labels with inbuilt position offsets with
   `arrow-label(<lbl>, dx: 2mm, dy: 4mm)`. Use `#al()` as a shorthand.
 - Add text to labels by passing `caption`, and style it with `caption-options`.
@@ -47,7 +54,7 @@ Draw and style arrows between labels.
 
 ## Usage
 ### Import
-`#import "@preview/larrow:1.1.0": *`
+`#import "@preview/larrow:1.2.0": *`
 
 ### Functionality
 The package makes available two key functions. `label-arrow()` draws arrows
@@ -162,7 +169,7 @@ To set default values or make custom variants with defaults, you can use `#let`
 instead to overwrite them with given parameter values:
 
 ```typst
-#import "@preview/larrow:1.1.0": *
+#import "@preview/larrow:1.2.0": *
 
 // Make the default tip for arrows a triangle.
 #let label-arrow = label-arrow.with(tip: ">")
@@ -196,7 +203,7 @@ If you want to use the package locally, you have two options:
    [official documentation](https://github.com/typst/packages?tab=readme-ov-file#local-packages)
    for where to find and create a namespace. Then simply import the package
    from that namespace. The following example assumes a namespace named `local`
-   to be used: `#import "@local/larrow:1.1.0": *`
+   to be used: `#import "@local/larrow:1.2.0": *`
 
    This makes the package available anywhere on your system via the namespace
    import.
