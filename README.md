@@ -3,7 +3,7 @@ Draw and style arrows between labels.
 
 ## Example
 ```typst
-#import "@local/larrow:1.2.0": *
+#import "@preview/larrow:1.2.0": *
 
 #set page(width: 16cm, height: 6cm, margin: (left: 1cm))
 
